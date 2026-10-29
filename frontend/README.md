@@ -20,3 +20,4 @@ The frontend is automatically served by Flask at:
 http://localhost:5001/
 ```
 No npm or node build step is required!
+
