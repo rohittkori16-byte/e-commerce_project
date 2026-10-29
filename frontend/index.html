@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Micro E-Commerce Catalog & Basket Engine Demo</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+  <header>
+    <h1>🛍️ Micro E-Commerce Demo Store</h1>
+    <div class="header-right">
+      <span class="badge-healthy" id="health-badge">● API Online</span>
+      <button class="btn-outline" style="color: white; border-color: #334155; background: #1e293b;" onclick="seedSampleProducts()">Seed Sample Data</button>
+    </div>
+  </header>
+
+  <div class="shopper-bar">
+    <div class="shopper-select">
+      <span>Active Shopper:</span>
+      <input type="text" id="shopper-id-input" value="shopper_demo_01" onchange="changeShopper()">
+      <button class="btn-outline" onclick="changeShopper()">Switch Shopper</button>
+    </div>
+    <div style="font-size: 13px; color: var(--text-muted);">
+      Each shopper has their own isolated basket in MongoDB.
+    </div>
+  </div>
+
+  <div class="container">
+    <!-- Main Catalog View -->
+    <main>
+      <div id="alert-box" class="alert"></div>
+
+      <div class="controls">
+        <h2 style="font-size: 20px; font-weight: 700;">Catalog Products</h2>
+        <div class="filter-group">
+          <select id="category-filter" onchange="loadProducts()">
+            <option value="">All Categories</option>
+            <option value="Electronics">Electronics</option>
+            <option value="Apparel">Apparel</option>
+          </select>
+          <select id="sort-select" onchange="loadProducts()">
+            <option value="">Sort: Default</option>
+            <option value="price_asc">Price: Low to High</option>
+            <option value="price_desc">Price: High to Low</option>
+          </select>
+          <button class="btn-outline" onclick="loadProducts()">↻ Refresh</button>
+        </div>
+      </div>
+
+      <div class="product-grid" id="product-grid">
+        <div class="empty-state">Loading products...</div>
+      </div>
+    </main>
+
+    <!-- Basket Sidebar -->
+    <aside>
+      <div class="basket-panel">
+        <h2>
+          <span>🛒 Shopping Basket</span>
+          <span style="font-size: 13px; font-weight: normal; color: var(--text-muted);" id="basket-shopper-label"></span>
+        </h2>
+
+        <div class="basket-items" id="basket-items">
+          <div class="empty-state">Your basket is empty</div>
+        </div>
+
+        <div class="basket-totals" id="basket-totals" style="display: none;">
+          <div class="total-row">
+            <span>Total Items:</span>
+            <strong id="total-units">0</strong>
+          </div>
+          <div class="total-row subtotal-row">
+            <span>Subtotal:</span>
+            <span id="subtotal-amount">₹0.00</span>
+          </div>
+          <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">
+            ✓ Calculated dynamically by backend using Python Decimal
+          </div>
+          <button class="btn-primary btn-checkout" onclick="performCheckout()">Complete Checkout</button>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html>
