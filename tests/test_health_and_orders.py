@@ -42,3 +42,4 @@ def test_order_retrieval_and_listing(client, sample_products):
     # 404 for non-existent order
     not_found = client.get("/api/orders/nonexistent_order_id")
     assert not_found.status_code == 404
+

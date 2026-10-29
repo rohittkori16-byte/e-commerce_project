@@ -33,3 +33,4 @@ def health_check():
             "database": "disconnected",
             "error": str(exc),
         }), 503
+

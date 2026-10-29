@@ -63,3 +63,4 @@ class ProductService:
     def delete_product(self, product_id):
         """Delete product by ID."""
         return self.repo.delete(product_id)
+

@@ -83,3 +83,4 @@ def test_empty_basket_returns_zero_totals(client):
     assert basket["items"] == []
     assert basket["total_items"] == 0
     assert basket["subtotal"] == 0.00
+

@@ -157,3 +157,4 @@ def test_dynamic_pricing_during_checkout(client, sample_products):
     assert order["subtotal"] == 600.00
     assert order["items"][0]["unit_price"] == 600.00
     assert order["items"][0]["line_total"] == 600.00
+

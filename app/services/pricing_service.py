@@ -69,3 +69,4 @@ class PricingService:
             "subtotal": format_currency(subtotal_dec),
             "missing_products": missing_products,
         }
+

@@ -163,3 +163,4 @@ def test_complete_end_to_end_scenario(client, db):
     order_dynamic = checkout_dynamic.get_json()["order"]
     assert order_dynamic["items"][0]["unit_price"] == 600.00
     assert order_dynamic["subtotal"] == 600.00
+

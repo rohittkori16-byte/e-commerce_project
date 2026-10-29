@@ -34,3 +34,4 @@ def checkout(shopper_id):
         "message": "Checkout successful",
         "order": order,
     }), 201
+

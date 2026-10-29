@@ -177,3 +177,4 @@ def test_shopper_access_isolation(client, sample_products):
     )
     assert res.status_code == 403
     assert res.get_json()["error"]["code"] == "FORBIDDEN"
+

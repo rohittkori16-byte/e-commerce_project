@@ -108,3 +108,4 @@ def sample_products(client):
         "keyboard": res2.get_json(),
         "tshirt": res3.get_json(),
     }
+

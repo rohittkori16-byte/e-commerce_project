@@ -55,3 +55,4 @@ def create_app(config_name=None, custom_client=None):
         return error_response("INTERNAL_SERVER_ERROR", "An unexpected server error occurred", 500)
 
     return app
+

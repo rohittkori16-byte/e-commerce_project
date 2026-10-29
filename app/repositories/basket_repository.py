@@ -135,3 +135,4 @@ class BasketRepository:
             {"$set": {"items": [], "updated_at": now}},
             session=session,
         )
+

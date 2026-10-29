@@ -153,3 +153,4 @@ def validate_update_item_quantity(data):
         return False, "Quantity must be greater than zero", None
 
     return True, "", {"quantity": quantity}
+

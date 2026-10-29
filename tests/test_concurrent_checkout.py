@@ -115,3 +115,4 @@ def test_concurrent_checkout_burst_ten_shoppers(app, client, db):
     # Exactly 3 orders created
     orders = list(db.orders.find({"items.product_id": product_id}))
     assert len(orders) == 3
+

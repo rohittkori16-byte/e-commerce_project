@@ -52,3 +52,4 @@ class OrderRepository:
         """Retrieve all orders placed by a shopper."""
         docs = list(self.collection.find({"shopper_id": shopper_id}).sort("created_at", -1))
         return [self._format_doc(d) for d in docs]
+

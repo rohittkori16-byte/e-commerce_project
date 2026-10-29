@@ -77,3 +77,4 @@ def delete_product(product_id):
 
     product_service.delete_product(product_id)
     return jsonify({"message": f"Product '{product_id}' deleted successfully"}), 200
+

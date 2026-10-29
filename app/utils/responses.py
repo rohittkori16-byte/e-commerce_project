@@ -33,3 +33,4 @@ def success_response(data=None, status_code: int = 200, message: str = None):
         if message:
             payload["message"] = message
         return jsonify(payload), status_code
+

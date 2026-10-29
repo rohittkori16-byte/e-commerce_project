@@ -448,3 +448,4 @@ All 33 tests execute in under 1 second, asserting:
 - **Authentication:** Currently uses shopper IDs via request URLs and `X-Shopper-ID` headers for demonstration simplicity. In enterprise production, replace with JWT / OAuth2 bearer tokens.
 - **Payment Processing:** Payment gateway integrations (Stripe, Razorpay) can be introduced as a pre-commit step prior to inventory finalization.
 - **Distributed Caching:** Redis can be added to cache high-traffic catalog browsing responses with cache invalidation upon product updates.
+

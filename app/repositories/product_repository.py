@@ -106,3 +106,4 @@ class ProductRepository:
             },
             session=session,
         )
+

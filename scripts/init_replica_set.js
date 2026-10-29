@@ -16,3 +16,4 @@ try {
   var result = rs.initiate(config);
   printjson(result);
 }
+

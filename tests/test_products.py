@@ -162,3 +162,4 @@ def test_update_and_delete_product(client, sample_products):
     # Verify deleted
     get_res = client.get(f"/api/products/{mouse_id}")
     assert get_res.status_code == 404
+

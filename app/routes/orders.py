@@ -27,3 +27,4 @@ def list_orders():
         # Return recent orders
         orders = [order_repo._format_doc(d) for d in order_repo.collection.find().sort("created_at", -1).limit(50)]
     return jsonify({"orders": orders}), 200
+

@@ -44,3 +44,4 @@ def get_db():
 def get_client():
     """Retrieve the current MongoClient instance."""
     return mongo_client
+
