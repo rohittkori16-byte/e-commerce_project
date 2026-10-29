@@ -10,6 +10,7 @@ from app.routes.products import products_bp
 from app.routes.baskets import baskets_bp
 from app.routes.checkout import checkout_bp
 from app.routes.orders import orders_bp
+from app.routes.demo import demo_bp
 from app.utils.responses import error_response
 
 
@@ -31,6 +32,7 @@ def create_app(config_name=None, custom_client=None):
     app.register_blueprint(baskets_bp)
     app.register_blueprint(checkout_bp)
     app.register_blueprint(orders_bp)
+    app.register_blueprint(demo_bp)
 
     # Consistent JSON error handlers
     @app.errorhandler(400)
