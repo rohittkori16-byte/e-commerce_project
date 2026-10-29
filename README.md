@@ -25,13 +25,11 @@ A robust, production-style RESTful backend for a micro e-commerce storefront bui
 18. [Concurrent Checkout Protection](#18-concurrent-checkout-protection)
 19. [Installation Instructions](#19-installation-instructions)
 20. [Environment Variable Setup](#20-environment-variable-setup)
-21. [Docker Setup](#21-docker-setup)
-22. [MongoDB Replica-Set Initialization](#22-mongodb-replica-set-initialization)
-23. [Running the Application](#23-running-the-application)
-24. [Running Automated Tests](#24-running-automated-tests)
-25. [Importing the Postman Collection](#25-importing-the-postman-collection)
-26. [Example End-to-End Shopping Workflow](#26-example-end-to-end-shopping-workflow)
-27. [Known Limitations and Future Improvements](#27-known-limitations-and-future-improvements)
+21. [Running the Application](#21-running-the-application)
+22. [Running Automated Tests](#22-running-automated-tests)
+23. [Importing the Postman Collection](#23-importing-the-postman-collection)
+24. [Example End-to-End Shopping Workflow](#24-example-end-to-end-shopping-workflow)
+25. [Known Limitations and Future Improvements](#25-known-limitations-and-future-improvements)
 
 ---
 
@@ -63,7 +61,6 @@ This engine solves these challenges by strictly calculating all prices on the ba
 - **Database:** MongoDB 7.x / 8.x
 - **Database Driver:** PyMongo
 - **Testing:** PyTest (33 automated unit, integration, and concurrency tests)
-- **Containerization:** Docker & Docker Compose
 - **API Testing:** Postman Collection v2.1.0
 
 ## 5. Architecture Overview
@@ -93,35 +90,36 @@ The application follows a clean layered architecture with clear separation of co
 
 ## 6. Folder Structure
 ```
-micro-ecommerce-engine/
-├── app/
-│   ├── __init__.py               # Flask application factory & error handlers
-│   ├── config.py                 # Environment configurations (Dev, Testing, Prod)
-│   ├── extensions.py             # MongoDB connection & index initialization
-│   ├── routes/
-│   │   ├── __init__.py
-│   │   ├── health.py             # GET /api/health
-│   │   ├── products.py           # CRUD /api/products
-│   │   ├── baskets.py            # Cart management /api/baskets
-│   │   ├── checkout.py           # POST /api/checkout/<shopper_id>
-│   │   └── orders.py             # GET /api/orders/<order_id>
-│   ├── services/
-│   │   ├── __init__.py
-│   │   ├── product_service.py    # Catalog business logic
-│   │   ├── basket_service.py     # Basket management & dynamic review
-│   │   ├── pricing_service.py    # Decimal calculations & subtotal sums
-│   │   └── checkout_service.py   # Multi-document transactions & concurrency
-│   ├── repositories/
-│   │   ├── __init__.py
-│   │   ├── product_repository.py # Product queries & atomic decrements
-│   │   ├── basket_repository.py  # Basket queries & mutations
-│   │   └── order_repository.py   # Order persistence & retrieval
-│   ├── validators/
-│   │   ├── __init__.py
-│   │   └── request_validators.py # Strict validation rules
-│   └── utils/
-│       ├── __init__.py
-│       └── responses.py          # Unified JSON response helpers
+Ecommerce-project/
+├── backend/                      # Complete Flask Backend
+│   ├── app/
+│   │   ├── routes/
+│   │   │   ├── health.py         # GET /api/health
+│   │   │   ├── products.py       # CRUD /api/products
+│   │   │   ├── baskets.py        # Cart management /api/baskets
+│   │   │   ├── checkout.py       # POST /api/checkout/<shopper_id>
+│   │   │   ├── orders.py         # GET /api/orders/<order_id>
+│   │   │   └── demo.py           # Serves frontend UI at /
+│   │   ├── services/
+│   │   │   ├── product_service.py    # Catalog business logic
+│   │   │   ├── basket_service.py     # Basket management & dynamic review
+│   │   │   ├── pricing_service.py    # Decimal calculations & subtotal sums
+│   │   │   └── checkout_service.py   # Multi-document transactions & concurrency
+│   │   ├── repositories/
+│   │   │   ├── product_repository.py # Product queries & atomic decrements
+│   │   │   ├── basket_repository.py  # Basket queries & mutations
+│   │   │   └── order_repository.py   # Order persistence & retrieval
+│   │   ├── validators/
+│   │   │   └── request_validators.py # Strict validation rules
+│   │   └── utils/
+│   │       └── responses.py          # Unified JSON response helpers
+│   ├── run.py                    # Backend server launcher
+│   └── requirements.txt          # Python dependencies
+├── frontend/                     # Interactive Demo Storefront
+│   ├── index.html                # Storefront HTML layout
+│   ├── style.css                 # Responsive styling & badge indicators
+│   ├── app.js                    # Client-side JavaScript calling backend APIs
+│   └── README.md                 # Frontend documentation
 ├── tests/
 │   ├── conftest.py               # Test app, mock/real DB setup, fixtures
 │   ├── test_products.py          # Product CRUD, sort, filter, pagination
@@ -131,15 +129,12 @@ micro-ecommerce-engine/
 │   ├── test_concurrent_checkout.py # Concurrency threads & race conditions
 │   ├── test_end_to_end_scenario.py # Section 13 E2E shopping scenarios
 │   └── test_health_and_orders.py # Health check and historical orders
-├── scripts/
-│   └── init_replica_set.js       # MongoDB replica set initialization
 ├── postman/
 │   └── ecommerce_collection.json # Postman 17-step workflow & negative tests
 ├── .env.example                  # Template environment variables
 ├── .gitignore                    # Ignored files (venv, logs, cache)
-├── requirements.txt              # Production and test dependencies
-├── Dockerfile                    # Container build configuration
-├── docker-compose.yml            # Multi-container setup (Flask + MongoDB RS)
+├── requirements.txt              # Project dependencies
+├── run.py                        # Root launcher script (port 5001)
 ├── pytest.ini                    # Pytest configuration
 └── README.md                     # Complete project documentation
 ```
@@ -387,36 +382,14 @@ TEST_MONGO_URI=mongodb://localhost:27017/ecommerce_test_db
 TEST_DB_NAME=ecommerce_test_db
 ```
 
-## 21. Docker Setup
-Run the entire application stack with a single command:
-```bash
-docker compose up --build -d
-```
-Inspect logs:
-```bash
-docker compose logs -f
-```
-Stop services:
-```bash
-docker compose down
-```
-
-## 22. MongoDB Replica-Set Initialization
-When using Docker Compose, the single-node replica set `rs0` is automatically initialized via healthcheck and `scripts/init_replica_set.js`.
-
-To verify replica set status manually:
-```bash
-docker compose exec mongo mongosh --eval "rs.status()"
-```
-
-## 23. Running the Application
+## 21. Running the Application
 ```bash
 source .venv/bin/activate
 python run.py
 ```
-The server will start at `http://localhost:5000`.
+The server will start at `http://localhost:5001`. Open that link in your browser to interact with the demo storefront!
 
-## 24. Running Automated Tests
+## 22. Running Automated Tests
 Run the complete test suite:
 ```bash
 source .venv/bin/activate
@@ -430,13 +403,13 @@ All 33 tests execute in under 1 second, asserting:
 - Parallel thread concurrency testing preventing overselling.
 - Complete Section 13 End-to-End scenario.
 
-## 25. Importing the Postman Collection
+## 23. Importing the Postman Collection
 1. Open Postman.
 2. Click **Import** in the top navigation bar.
 3. Select `postman/ecommerce_collection.json`.
 4. Run the **1. Demonstration Sequence (17 Steps)** folder using Postman Collection Runner or execute each request in sequence.
 
-## 26. Example End-to-End Shopping Workflow
+## 24. Example End-to-End Shopping Workflow
 1. **Create Products:** Create "Wireless Mouse" (₹500, stock 5) and "Keyboard" (₹1000, stock 3).
 2. **Browse & Sort:** `GET /api/products?sort=price_asc` returns Mouse first, then Keyboard.
 3. **Build Basket:** Add 2 Mice and 1 Keyboard. Subtotal is ₹2000.
@@ -444,7 +417,7 @@ All 33 tests execute in under 1 second, asserting:
 5. **Checkout:** Request 2 Mice and 1 Keyboard. Checkout succeeds with HTTP 201; Mouse stock drops to 3, Keyboard drops to 2, and basket is cleared.
 6. **Order Receipt:** Order receipt is saved with immutable snapshot details.
 
-## 27. Known Limitations and Future Improvements
+## 25. Known Limitations and Future Improvements
 - **Authentication:** Currently uses shopper IDs via request URLs and `X-Shopper-ID` headers for demonstration simplicity. In enterprise production, replace with JWT / OAuth2 bearer tokens.
 - **Payment Processing:** Payment gateway integrations (Stripe, Razorpay) can be introduced as a pre-commit step prior to inventory finalization.
 - **Distributed Caching:** Redis can be added to cache high-traffic catalog browsing responses with cache invalidation upon product updates.
