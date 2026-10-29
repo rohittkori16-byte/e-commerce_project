@@ -27,9 +27,8 @@ A robust, production-style RESTful backend for a micro e-commerce storefront bui
 20. [Environment Variable Setup](#20-environment-variable-setup)
 21. [Running the Application](#21-running-the-application)
 22. [Running Automated Tests](#22-running-automated-tests)
-23. [Importing the Postman Collection](#23-importing-the-postman-collection)
-24. [Example End-to-End Shopping Workflow](#24-example-end-to-end-shopping-workflow)
-25. [Known Limitations and Future Improvements](#25-known-limitations-and-future-improvements)
+23. [Example End-to-End Shopping Workflow](#23-example-end-to-end-shopping-workflow)
+24. [Known Limitations and Future Improvements](#24-known-limitations-and-future-improvements)
 
 ---
 
@@ -61,13 +60,12 @@ This engine solves these challenges by strictly calculating all prices on the ba
 - **Database:** MongoDB 7.x / 8.x
 - **Database Driver:** PyMongo
 - **Testing:** PyTest (33 automated unit, integration, and concurrency tests)
-- **API Testing:** Postman Collection v2.1.0
 
 ## 5. Architecture Overview
 The application follows a clean layered architecture with clear separation of concerns:
 
 ```
-[ HTTP Requests / Postman / Clients ]
+[ HTTP Requests / Browser / Clients ]
                │
                ▼
    [ Flask Routes / Blueprints ]  <--- Input Validation (RequestValidators)
@@ -129,8 +127,6 @@ Ecommerce-project/
 │   ├── test_concurrent_checkout.py # Concurrency threads & race conditions
 │   ├── test_end_to_end_scenario.py # Section 13 E2E shopping scenarios
 │   └── test_health_and_orders.py # Health check and historical orders
-├── postman/
-│   └── ecommerce_collection.json # Postman 17-step workflow & negative tests
 ├── .env.example                  # Template environment variables
 ├── .gitignore                    # Ignored files (venv, logs, cache)
 ├── requirements.txt              # Project dependencies
@@ -403,13 +399,7 @@ All 33 tests execute in under 1 second, asserting:
 - Parallel thread concurrency testing preventing overselling.
 - Complete Section 13 End-to-End scenario.
 
-## 23. Importing the Postman Collection
-1. Open Postman.
-2. Click **Import** in the top navigation bar.
-3. Select `postman/ecommerce_collection.json`.
-4. Run the **1. Demonstration Sequence (17 Steps)** folder using Postman Collection Runner or execute each request in sequence.
-
-## 24. Example End-to-End Shopping Workflow
+## 23. Example End-to-End Shopping Workflow
 1. **Create Products:** Create "Wireless Mouse" (₹500, stock 5) and "Keyboard" (₹1000, stock 3).
 2. **Browse & Sort:** `GET /api/products?sort=price_asc` returns Mouse first, then Keyboard.
 3. **Build Basket:** Add 2 Mice and 1 Keyboard. Subtotal is ₹2000.
@@ -417,7 +407,7 @@ All 33 tests execute in under 1 second, asserting:
 5. **Checkout:** Request 2 Mice and 1 Keyboard. Checkout succeeds with HTTP 201; Mouse stock drops to 3, Keyboard drops to 2, and basket is cleared.
 6. **Order Receipt:** Order receipt is saved with immutable snapshot details.
 
-## 25. Known Limitations and Future Improvements
+## 24. Known Limitations and Future Improvements
 - **Authentication:** Currently uses shopper IDs via request URLs and `X-Shopper-ID` headers for demonstration simplicity. In enterprise production, replace with JWT / OAuth2 bearer tokens.
 - **Payment Processing:** Payment gateway integrations (Stripe, Razorpay) can be introduced as a pre-commit step prior to inventory finalization.
 - **Distributed Caching:** Redis can be added to cache high-traffic catalog browsing responses with cache invalidation upon product updates.
